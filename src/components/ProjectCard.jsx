@@ -24,9 +24,9 @@ const ProjectCard = ({ project }) => {
     <motion.div
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
+      transition={{ duration: 1.8, ease: "easeOut" }}
       viewport={{ once: true }}
-      className="flex flex-col md:flex-row items-center bg-stone-900 overflow-hidden rounded-2xl shadow-lg my-8 md:my-16"
+      className="flex flex-col md:flex-row items-center p-30 bg-stone-900 overflow-hidden rounded-2xl shadow-lg my-8 md:my-16"
       ref={(el) => {
         ref(el);
         containerRef.current = el;
