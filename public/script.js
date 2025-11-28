@@ -13,6 +13,7 @@ const scroll = new LocomotiveScroll({
         smooth: true
     }
 });
+window.locomotiveScroll = scroll;
 
 // Update ScrollTrigger on Locomotive's "scroll" event
 scroll.on('scroll', ScrollTrigger.update);
@@ -114,10 +115,10 @@ function scaleImage(img, ctx) {
 // --- Pinning & Z-Index ---
 // NEW: Use matchMedia to set z-index AND pinning logic responsively
 ScrollTrigger.matchMedia({
-    
+
     // Desktop (and tablet)
-    "(min-width: 769px)": function() {
-        
+    "(min-width: 769px)": function () {
+
         // --- Desktop Z-Index ---
         // Canvas (2) is ON TOP of loop (1)
         // Other text (3) is ON TOP of canvas
@@ -164,8 +165,8 @@ ScrollTrigger.matchMedia({
     },
 
     // Mobile (max-width: 768px)
-    "(max-width: 768px)": function() {
-        
+    "(max-width: 768px)": function () {
+
         // --- Mobile Z-Index ---
         // Canvas (1) is BEHIND all text (2)
         gsap.set("#page>canvas", { zIndex: 1 });

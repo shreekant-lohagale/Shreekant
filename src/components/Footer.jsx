@@ -43,16 +43,16 @@ export function Footer() {
   ];
 
   return (
-    <footer className="relative bg-black text-muted-foreground mt-20 pt-16 pb-8 overflow-hidden">
+    <footer id="contact" className="relative bg-black text-muted-foreground mt-20 pt-16 pb-8 overflow-hidden">
       {/* Lottie Animation Background */}
       {/* Adjust opacity as needed */}
-      <div className="absolute inset-0 z-0 opacity-20"> 
-          <DotLottieReact
-            src="/Connect with us.lottie"
-            loop
-            autoplay
-            className="w-full h-full object-cover"
-          />
+      <div className="absolute inset-0 z-0 opacity-20">
+        <DotLottieReact
+          src="/Connect with us.lottie"
+          loop
+          autoplay
+          className="w-full h-full object-cover"
+        />
       </div>
 
       {/* Main content wrapper */}
@@ -60,7 +60,7 @@ export function Footer() {
         <div className="w-full">
           {/* Top section: Brand and links */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            
+
             {/* Brand Section */}
             <div className="lg:col-span-1">
               <div className="flex items-center gap-3 mb-4">

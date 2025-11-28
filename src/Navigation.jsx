@@ -17,7 +17,11 @@ export function Navigation() {
   const scrollToSection = (href) => {
     const element = document.querySelector(href);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      if (window.locomotiveScroll) {
+        window.locomotiveScroll.scrollTo(element);
+      } else {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
       setIsMenuOpen(false);
     }
   };
