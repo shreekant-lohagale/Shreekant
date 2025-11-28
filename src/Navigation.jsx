@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { GlassCard } from "./components/ui/GlassCard";
 
 export function Navigation() {
@@ -21,7 +22,10 @@ export function Navigation() {
     }
   };
 
-  return (
+  const navRoot = document.getElementById('nav-root');
+  if (!navRoot) return null;
+
+  return createPortal(
     <motion.nav
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -34,7 +38,7 @@ export function Navigation() {
             {/* Logo */}
             <div className="flex items-center gap-2 text-neutral-300">
               <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center">
-                <img src={"./logo.png"} alt="logo" className="rounded-xl" />
+                <img src={"./logo.jpg"} alt="logo" className="rounded-xl" />
               </div>
               <h3 className="text-xl font-bold">
                 <b>SHREE</b>KANT*
@@ -52,7 +56,7 @@ export function Navigation() {
                   {item.label}
                 </button>
               ))}
-              
+
               {/* Welcome Button */}
               <button
                 className="px-5 py-2 rounded-[50px] bg-transparent text-[#00ff00] border border-[#00ff00] font-gilroy text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#00ff00] hover:text-black hover:shadow-[0_0_20px_rgba(0,255,0,0.5)]"
@@ -88,7 +92,7 @@ export function Navigation() {
                     {item.label}
                   </button>
                 ))}
-                
+
                 {/* Mobile Welcome Button */}
                 <button
                   className="w-full px-5 py-2 rounded-[50px] bg-transparent text-[#00ff00] border border-[#00ff00] font-gilroy text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#00ff00] hover:text-black hover:shadow-[0_0_20px_rgba(0,255,0,0.5)]"
@@ -100,6 +104,7 @@ export function Navigation() {
           )}
         </div>
       </GlassCard>
-    </motion.nav>
+    </motion.nav>,
+    navRoot
   );
 }

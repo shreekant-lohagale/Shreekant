@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       {/* Only render the ProjectsSection - the rest is handled by vanilla JS */}
-      {/* <Navigation /> */}
+      <Navigation />
       <ProjectsSection />
       <ImageTrailDemo />
       <Footer />
