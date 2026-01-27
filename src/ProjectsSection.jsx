@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import { motion, useInView, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import ProjectCard from '@/components/ProjectCard';
@@ -6,10 +6,7 @@ import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// ✅ Register plugins once at the top level
-if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger);
-}
+// Plugin registered inside component for safety
 
 const projects = [
   {
@@ -94,148 +91,160 @@ const ProjectsSection = () => {
   const lottieScale = useTransform(scrollYProgress, [0, 0.3], [1, 1.2]);
 
   // GSAP Animations
-  useEffect(() => {
+  useLayoutEffect(() => {
+    // Register ScrollTrigger LOCALLY to ensure it works with React HMR/Strict Mode
     gsap.registerPlugin(ScrollTrigger);
 
     if (!containerRef.current) return;
 
-    // Hero section animations
-    const heroTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: heroRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 1
-      }
-    });
-
-    heroTl.fromTo(heroRef.current, 
-      { opacity: 1 },
-      { opacity: 0.6, duration: 2 }
-    );
-
-    // Lottie animation scale effect
-    if (lottieRef.current) {
-      gsap.fromTo(lottieRef.current,
-        { scale: 0.8, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 1.5,
-          ease: "power2.out",
+    // Create a context for proper cleanup
+    const ctx = gsap.context(() => {
+      // Hero section animations - Only if heroRef exists
+      if (heroRef.current) {
+        const heroTl = gsap.timeline({
           scrollTrigger: {
             trigger: heroRef.current,
             start: "top bottom",
-            end: "center center",
-            toggleActions: "play none none reverse"
+            end: "bottom top",
+            scrub: 1
           }
-        }
-      );
-    }
+        });
 
-    // Project cards entrance animations with stagger
-    const projectSections = gsap.utils.toArray('.project-section:not(:first-child)');
-    
-    gsap.fromTo(projectSections,
-      {
-        y: 100,
-        opacity: 0,
-        scale: 0.95
-      },
-      {
-        y: 0,
-        opacity: 1,
-        scale: 1,
-        duration: 0.8,
-        ease: "power2.out",
-        stagger: 0.15,
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 60%",
-          end: "bottom 20%",
-          toggleActions: "play none none reverse"
-        }
-      }
-    );
+        heroTl.fromTo(heroRef.current,
+          { opacity: 1 },
+          { opacity: 0.6, duration: 2 }
+        );
 
-    // CTA section animation
-    gsap.fromTo(ctaRef.current,
-      {
-        y: 50,
-        opacity: 0,
-        scale: 0.9
-      },
-      {
-        y: 0,
-        opacity: 1,
-        scale: 1,
-        duration: 1.2,
-        ease: "back.out(1.7)",
-        scrollTrigger: {
-          trigger: ctaRef.current,
-          start: "top 80%",
-          end: "bottom 20%",
-          toggleActions: "play none none reverse"
+        // Lottie animation scale effect
+        if (lottieRef.current) {
+          gsap.fromTo(lottieRef.current,
+            { scale: 0.8, opacity: 0 },
+            {
+              scale: 1,
+              opacity: 1,
+              duration: 1.5,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: heroRef.current,
+                start: "top bottom",
+                end: "center center",
+                toggleActions: "play none none reverse"
+              }
+            }
+          );
         }
       }
-    );
 
-    // Optimized scroll snapping logic
-    const allSections = Array.from(containerRef.current.querySelectorAll('.project-section'));
-    if (allSections.length === 0) return;
-
-    const firstSection = allSections[0];
-    const lastSection = allSections[allSections.length - 1];
-    let snapEnabled = false;
-
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const scrollCenter = scrollY + window.innerHeight / 2;
-
-      let isInSnapZone = false;
-
-      if (isMobile) {
-        const snapZoneTop = firstSection.offsetTop + firstSection.offsetHeight / 2;
-        const snapZoneBottom = lastSection.offsetTop + lastSection.offsetHeight;
-        isInSnapZone = scrollCenter > snapZoneTop && scrollCenter < snapZoneBottom;
-      } else {
-        const snapZoneTop = firstSection.offsetTop;
-        const snapZoneBottom = lastSection.offsetTop;
-        isInSnapZone = scrollY >= snapZoneTop && scrollY <= snapZoneBottom;
+      // Project cards entrance animations with stagger
+      const projectSections = gsap.utils.toArray('.project-section:not(:first-child)');
+      if (projectSections.length > 0) {
+        gsap.fromTo(projectSections,
+          {
+            y: 100,
+            opacity: 0,
+            scale: 0.95
+          },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            ease: "power2.out",
+            stagger: 0.15,
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: "top 60%",
+              end: "bottom 20%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
       }
 
-      // Optimized: Only update DOM when state changes
-      if (isInSnapZone && !snapEnabled) {
-        document.documentElement.style.scrollSnapType = 'y mandatory';
-        if (!isMobile) {
-          document.documentElement.style.scrollSnapStop = 'always';
+      // CTA section animation - Check if exists first
+      if (ctaRef.current) {
+        gsap.fromTo(ctaRef.current,
+          {
+            y: 50,
+            opacity: 0,
+            scale: 0.9
+          },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 1.2,
+            ease: "back.out(1.7)",
+            scrollTrigger: {
+              trigger: ctaRef.current,
+              start: "top 80%",
+              end: "bottom 20%",
+              toggleActions: "play none none reverse"
+            }
+          }
+        );
+      }
+
+      // Optimized scroll snapping logic
+      const allSections = Array.from(containerRef.current.querySelectorAll('.project-section'));
+      if (allSections.length === 0) return;
+
+      const firstSection = allSections[0];
+      const lastSection = allSections[allSections.length - 1];
+      let snapEnabled = false;
+
+      const handleScroll = () => {
+        const scrollY = window.scrollY;
+        const scrollCenter = scrollY + window.innerHeight / 2;
+
+        let isInSnapZone = false;
+
+        if (isMobile) {
+          const snapZoneTop = firstSection.offsetTop + firstSection.offsetHeight / 2;
+          const snapZoneBottom = lastSection.offsetTop + lastSection.offsetHeight;
+          isInSnapZone = scrollCenter > snapZoneTop && scrollCenter < snapZoneBottom;
+        } else {
+          const snapZoneTop = firstSection.offsetTop;
+          const snapZoneBottom = lastSection.offsetTop;
+          isInSnapZone = scrollY >= snapZoneTop && scrollY <= snapZoneBottom;
         }
-        snapEnabled = true;
-      } else if (!isInSnapZone && snapEnabled) {
+
+        // Optimized: Only update DOM when state changes
+        if (isInSnapZone && !snapEnabled) {
+          document.documentElement.style.scrollSnapType = 'y mandatory';
+          if (!isMobile) {
+            document.documentElement.style.scrollSnapStop = 'always';
+          }
+          snapEnabled = true;
+        } else if (!isInSnapZone && snapEnabled) {
+          document.documentElement.style.scrollSnapType = '';
+          document.documentElement.style.scrollSnapStop = '';
+          snapEnabled = false;
+        }
+
+        // Active project indicator logic
+        allSections.forEach((section, index) => {
+          const sectionTop = section.offsetTop;
+          const sectionBottom = sectionTop + section.offsetHeight;
+          if (scrollCenter >= sectionTop && scrollCenter < sectionBottom) {
+            setActiveProject(index);
+          }
+        });
+      };
+
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      handleScroll(); // Initial check
+
+      // Cleanup function specifically for the listener added inside
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
         document.documentElement.style.scrollSnapType = '';
         document.documentElement.style.scrollSnapStop = '';
-        snapEnabled = false;
-      }
+      };
 
-      // Active project indicator logic
-      allSections.forEach((section, index) => {
-        const sectionTop = section.offsetTop;
-        const sectionBottom = sectionTop + section.offsetHeight;
-        if (scrollCenter >= sectionTop && scrollCenter < sectionBottom) {
-          setActiveProject(index);
-        }
-      });
-    };
+    }, containerRef); // Scope to container
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      document.documentElement.style.scrollSnapType = '';
-      document.documentElement.style.scrollSnapStop = '';
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
+    return () => ctx.revert(); // Force cleanup of all GSAP animations
   }, [isMobile]);
 
   // Framer Motion variants
@@ -263,7 +272,7 @@ const ProjectsSection = () => {
 
   const buttonVariants = {
     initial: { scale: 1 },
-    hover: { 
+    hover: {
       scale: 1.05,
       transition: { duration: 0.3 }
     },
@@ -298,7 +307,7 @@ const ProjectsSection = () => {
       className="relative min-h-screen w-full bg-stone-900 text-white overflow-hidden"
     >
       {/* Brand Identity Header */}
-      <motion.div 
+      <motion.div
         className="absolute top-10 w-full text-center z-20"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -318,7 +327,7 @@ const ProjectsSection = () => {
         animate={heroInView ? "visible" : "hidden"}
         variants={containerVariants}
       >
-        <motion.div 
+        <motion.div
           ref={lottieRef}
           className='absolute top-24 w-full h-full overflow-hidden'
           style={{ scale: lottieScale }}
@@ -331,16 +340,16 @@ const ProjectsSection = () => {
           />
           <div className="absolute inset-0 bg-stone-900/70"></div>
         </motion.div>
-        
-        <motion.div 
+
+        <motion.div
           className="text-center px-8 bottom-44 relative z-10"
           style={{ y: heroTitleY }}
         >
-          <motion.h1 
+          <motion.h1
             className="text-4xl md:text-6xl lg:text-8xl font-bold mb-6 text-white"
             variants={itemVariants}
           >
-            REAL <motion.span 
+            REAL <motion.span
               className="text-green-500"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -349,12 +358,12 @@ const ProjectsSection = () => {
               PROJECTS
             </motion.span>
           </motion.h1>
-          <motion.p 
+          <motion.p
             className="text-lg md:text-xl lg:text-2xl text-stone-300 max-w-3xl mx-auto"
             variants={itemVariants}
             style={{ y: heroSubtitleY }}
           >
-            From <span className="text-green-400">blockchain ecosystems</span> to <span className="text-green-400">AI-powered data platforms</span>, 
+            From <span className="text-green-400">blockchain ecosystems</span> to <span className="text-green-400">AI-powered data platforms</span>,
             these are the production applications I've built and shipped. Every project represents real users and real impact.
           </motion.p>
         </motion.div>
@@ -373,9 +382,9 @@ const ProjectsSection = () => {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, delay: index * 0.1 }}
           >
-            <div className="w-full max-w-6xl mx-auto px-5">
-              <ProjectCard 
-                project={{...project, index}}
+            <div className="w-full max-w-6xl mx-auto px-4 sm:px-5">
+              <ProjectCard
+                project={{ ...project, index }}
               />
             </div>
           </motion.div>

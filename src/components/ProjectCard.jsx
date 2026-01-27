@@ -26,7 +26,16 @@ const ProjectCard = ({ project }) => {
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 1.8, ease: "easeOut" }}
       viewport={{ once: true }}
-      className="flex flex-col md:flex-row items-center p-30 bg-stone-900 overflow-hidden rounded-2xl shadow-lg my-8 md:my-16"
+      className="
+        flex flex-col md:flex-row 
+        items-center 
+        p-4 sm:p-6 md:p-10 
+        bg-stone-900 
+        overflow-hidden 
+        rounded-2xl 
+        shadow-lg 
+        my-8 md:my-16
+      "
       ref={(el) => {
         ref(el);
         containerRef.current = el;
@@ -35,9 +44,11 @@ const ProjectCard = ({ project }) => {
       {/* ---- TEXT SIDE ---- */}
       <div
         className={`
-          ${isImageRight ? 'md:order-1 order-2' : 'md:order-2 order-1'} 
-          w-full md:w-1/2 flex items-center justify-center
-          px-6 sm:px-10 lg:px-16 py-10 sm:py-12 lg:py-20
+          order-2 md:order-${isImageRight ? '1' : '2'}
+          w-full md:w-1/2 
+          flex items-center justify-center
+          px-4 sm:px-6 md:px-10 lg:px-16
+          py-6 sm:py-8 md:py-12 lg:py-20
         `}
       >
         <div className="space-y-6 sm:space-y-8 max-w-lg">
@@ -82,12 +93,27 @@ const ProjectCard = ({ project }) => {
           </div>
 
           {/* --- Action Buttons --- */}
-          <div className="flex flex-wrap gap-3 sm:gap-4 pt-3 sm:pt-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-3 sm:pt-4">
             <a
               href={project.liveLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 sm:px-8 py-2.5 sm:py-3 bg-transparent border border-green-500 text-green-500 rounded-full text-sm font-semibold hover:bg-green-500 hover:text-black transition-all duration-300 hover:shadow-lg hover:shadow-green-500/30"
+              className="
+                w-full sm:w-auto
+                min-h-[44px]
+                px-6 sm:px-8
+                py-3
+                bg-transparent 
+                border border-green-500 
+                text-green-500 
+                rounded-full 
+                text-sm 
+                font-semibold 
+                hover:bg-green-500 hover:text-black 
+                transition-all duration-300 
+                hover:shadow-lg hover:shadow-green-500/30
+                flex items-center justify-center
+              "
             >
               View Live
             </a>
@@ -96,7 +122,18 @@ const ProjectCard = ({ project }) => {
               href={project.liveLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full bg-stone-800/50 text-stone-300 hover:bg-green-500 hover:text-black transition-all duration-300 border border-stone-600 hover:border-green-500"
+              className="
+                w-full sm:w-12
+                min-h-[44px]
+                h-12
+                flex items-center justify-center
+                rounded-full 
+                bg-stone-800/50 
+                text-stone-300 
+                hover:bg-green-500 hover:text-black 
+                transition-all duration-300 
+                border border-stone-600 hover:border-green-500
+              "
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -113,8 +150,10 @@ const ProjectCard = ({ project }) => {
 
       {/* ---- IMAGE SIDE ---- */}
       <div
-        className={`${isImageRight ? 'md:order-2 order-1' : 'md:order-1 order-2'}
-  w-full md:w-1/2`}
+        className={`
+          order-1 md:order-${isImageRight ? '2' : '1'}
+          w-full md:w-1/2
+        `}
       >
         {/* Desktop Image (visible and parallax-enabled) */}
         <div className="hidden md:block relative w-full min-h-[70vh] overflow-hidden">
@@ -142,7 +181,7 @@ const ProjectCard = ({ project }) => {
         </div>
 
         {/* Mobile Image */}
-        <div className="md:hidden w-full h-60 sm:h-72 relative">
+        <div className="md:hidden w-full h-56 sm:h-64 relative rounded-xl overflow-hidden">
           <img
             src={project.image}
             alt={project.title}

@@ -56,7 +56,7 @@ export function Footer() {
       </div>
 
       {/* Main content wrapper */}
-      <div className="max-w-7xl mx-auto px-8 relative z-10"> {/* Ensure content is above Lottie */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10"> {/* Ensure content is above Lottie */}
         <div className="w-full">
           {/* Top section: Brand and links */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
