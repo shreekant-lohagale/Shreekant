@@ -36,10 +36,10 @@ export function Footer() {
   ];
 
   const socialLinks = [
-    { name: "GitHub", icon: Github, href: "#" },
-    { name: "LinkedIn", icon: Linkedin, href: "#" },
-    { name: "Twitter", icon: Twitter, href: "#" },
-    { name: "Email", icon: Mail, href: "mailto:shreekant@example.com" },
+    { name: "GitHub", icon: Github, href: "https://github.com/shreekant-lohagale" },
+    { name: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/in/shreekant-lohagale/" },
+    { name: "Twitter", icon: Twitter, href: "https://x.com/Shreekant_S_L" },
+    { name: "Email", icon: Mail, href: "mailto:shreekantlohagale@gmail.com" },
   ];
 
   return (
