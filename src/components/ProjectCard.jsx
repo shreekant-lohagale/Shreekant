@@ -1,197 +1,94 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { useRef } from 'react';
+import React from 'react';
+import { ExternalLink, Github } from 'lucide-react';
 
 const ProjectCard = ({ project }) => {
-  const isImageRight = project.imagePosition === 'right';
-  const containerRef = useRef(null);
-  const { ref, inView } = useInView({ threshold: 0.3, triggerOnce: false });
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start end', 'end start'],
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], ['-10%', '10%']);
-
-  const statusColors = {
-    "Completed": "bg-green-500",
-    "In Progress": "bg-yellow-500",
-    "Planning": "bg-blue-500",
-    "Research": "bg-purple-500"
-  };
-
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 1.8, ease: "easeOut" }}
-      viewport={{ once: true }}
-      className="
-        flex flex-col md:flex-row 
-        items-center 
-        p-4 sm:p-6 md:p-10 
-        bg-stone-900 
-        overflow-hidden 
-        rounded-2xl 
-        shadow-lg 
-        my-8 md:my-16
-      "
-      ref={(el) => {
-        ref(el);
-        containerRef.current = el;
-      }}
+    <div
+      className={`
+        group relative w-full
+        bg-white border border-[#ddd]
+        rounded-3xl overflow-hidden
+        hover:shadow-2xl transition-all duration-500
+        flex flex-col lg:grid lg:grid-cols-[1.2fr_0.8fr] gap-0
+        mb-20 md:mb-12
+      `}
     >
-      {/* ---- TEXT SIDE ---- */}
-      <div
-        className={`
-          order-2 md:order-${isImageRight ? '1' : '2'}
-          w-full md:w-1/2 
-          flex items-center justify-center
-          px-4 sm:px-6 md:px-10 lg:px-16
-          py-6 sm:py-8 md:py-12 lg:py-20
-        `}
-      >
-        <div className="space-y-6 sm:space-y-8 max-w-lg">
-          {/* --- Status Badge --- */}
-          <div className="flex items-center gap-3 sm:gap-4">
-            <span
-              className={`px-3 py-1 rounded-full text-xs sm:text-sm font-semibold ${statusColors[project.status] || 'bg-gray-500'
-                } text-white`}
-            >
-              {project.status}
-            </span>
-            <span className="text-xl sm:text-2xl opacity-50 text-green-500">
-              {String(project.index + 1).padStart(2, '0')}
-            </span>
-          </div>
-
-          {/* --- Title --- */}
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
-            {project.title}
-          </h2>
-
-          {/* --- Description --- */}
-          <p className="text-base sm:text-lg md:text-xl text-stone-300 leading-relaxed">
-            {project.description}
-          </p>
-
-          {/* --- Technologies --- */}
-          <div className="space-y-3 sm:space-y-4">
-            <h3 className="text-base sm:text-lg font-semibold text-white">
-              Technologies Used
+      {/* Content Section (Data Side) */}
+      <div className="flex-1 space-y-6 flex flex-col justify-center p-8 md:p-12 border-b lg:border-b-0 lg:border-r border-[#eee]">
+        <div className="flex items-start justify-between">
+          <div>
+            <h4 className="text-[#FF4500] text-xs font-black tracking-[5px] uppercase mb-3">
+              {project.subtitle}
+            </h4>
+            <h3 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#1a1a1a] tracking-tight leading-[0.9]">
+              {project.title.toUpperCase()}.
             </h3>
-            <div className="flex flex-wrap gap-2 sm:gap-3">
-              {project.technologies.map((tech) => (
-                <span
-                  key={tech}
-                  className="px-3 sm:px-4 py-1.5 sm:py-2 bg-stone-800/50 text-stone-300 rounded-full text-xs sm:text-sm border border-stone-600 hover:border-green-500 hover:text-green-300 transition-all duration-300"
-                >
-                  {tech}
-                </span>
-              ))}
+          </div>
+          <span className="px-5 py-2 bg-[#fdfdfd] border border-[#eee] rounded-full text-[10px] font-black text-[#FF4500] uppercase tracking-widest">
+            {project.status === "Winner" ? "🏆 " + project.status : project.status}
+          </span>
+        </div>
+
+        <p className="text-[#555] leading-relaxed text-lg font-medium max-w-xl">
+          {project.description}
+        </p>
+
+        {/* METRIC HIGHLIGHT - DATA SIDE */}
+        {project.metric && (
+          <div className="py-6 border-y border-[#f5f5f5] flex items-center gap-6">
+            <div className="text-5xl font-black text-[#FF4500] tracking-tighter">
+              {project.metric.value}
+            </div>
+            <div className="text-xs font-bold text-[#777] uppercase leading-tight tracking-wider">
+              {project.metric.label}
             </div>
           </div>
+        )}
 
-          {/* --- Action Buttons --- */}
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-3 sm:pt-4">
-            <a
-              href={project.liveLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="
-                w-full sm:w-auto
-                min-h-[44px]
-                px-6 sm:px-8
-                py-3
-                bg-transparent 
-                border border-green-500 
-                text-green-500 
-                rounded-full 
-                text-sm 
-                font-semibold 
-                hover:bg-green-500 hover:text-black 
-                transition-all duration-300 
-                hover:shadow-lg hover:shadow-green-500/30
-                flex items-center justify-center
-              "
+        <div className="flex flex-wrap gap-2">
+          {project.technologies.map((tech) => (
+            <span
+              key={tech}
+              className="px-3 py-1 bg-[#F5F4EF] border border-[#e5e4de] rounded-md text-[11px] font-bold text-[#777] uppercase tracking-wider"
             >
-              View Live
-            </a>
+              {tech}
+            </span>
+          ))}
+        </div>
 
-            <a
-              href={project.liveLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="
-                w-full sm:w-12
-                min-h-[44px]
-                h-12
-                flex items-center justify-center
-                rounded-full 
-                bg-stone-800/50 
-                text-stone-300 
-                hover:bg-green-500 hover:text-black 
-                transition-all duration-300 
-                border border-stone-600 hover:border-green-500
-              "
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                />
-              </svg>
-            </a>
-          </div>
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          <a
+            href={project.liveLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-8 py-5 bg-[#FF4500] text-white rounded-xl font-black uppercase text-xs hover:bg-[#000] transition-all flex items-center justify-center gap-2 tracking-widest shadow-lg shadow-orange-500/20"
+          >
+            Launch Case Study <ExternalLink size={14} />
+          </a>
+
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-8 py-5 border-2 border-[#1a1a1a] text-[#1a1a1a] rounded-xl font-black uppercase text-xs hover:bg-[#1a1a1a] hover:text-white transition-all flex items-center justify-center gap-2 tracking-widest"
+          >
+            <Github size={14} /> Source Code
+          </a>
         </div>
       </div>
 
-      {/* ---- IMAGE SIDE ---- */}
-      <div
-        className={`
-          order-1 md:order-${isImageRight ? '2' : '1'}
-          w-full md:w-1/2
-        `}
-      >
-        {/* Desktop Image (visible and parallax-enabled) */}
-        <div className="hidden md:block relative w-full min-h-[70vh] overflow-hidden">
-          <motion.div
-            style={{ y }}
-            className="absolute inset-0 z-0 will-change-transform"
-          >
+      {/* Image Section (Visual Side) */}
+      <div className="flex-1 relative group overflow-hidden bg-[#f9f9f9] flex items-center justify-center p-4 md:p-8 order-first lg:order-none">
+        <div className="w-full h-full relative rounded-2xl overflow-hidden shadow-2xl border border-white/50">
             <img
-              src={project.image}
-              alt={project.title}
-              className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-            />
-          </motion.div>
-
-          {/* Gradient Overlay */}
-          <div
-            className={`absolute inset-0 z-10 pointer-events-none bg-gradient-to-r ${isImageRight
-              ? 'from-stone-900/80 via-stone-900/20 to-transparent'
-              : 'from-transparent via-stone-900/20 to-stone-900/80'
-              }`}
-          />
-
-          {/* Optional Hover Border */}
-          <div className="absolute inset-0 z-20 border-2 border-transparent hover:border-green-500/30 transition-all duration-500" />
-        </div>
-
-        {/* Mobile Image */}
-        <div className="md:hidden w-full h-56 sm:h-64 relative rounded-xl overflow-hidden">
-          <img
             src={project.image}
             alt={project.title}
-            className="w-full h-full object-cover grayscale"
-          />
-          <div className="absolute inset-0 bg-stone-900/50" />
+            className="w-full h-full object-cover group-hover:scale-105 transition-all duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent pointer-events-none" />
         </div>
       </div>
-
-    </motion.div>
+    </div>
   );
 };
 

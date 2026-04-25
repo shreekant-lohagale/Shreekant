@@ -1,511 +1,344 @@
-*{
-    margin: 0%;
-    padding: 0%;
+:root {
+    --bg-color: #EBE9E1;
+    --primary-accent: #FF4500;
+    --text-dark: #1a1a1a;
+}
+
+* {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
-html,body{
+
+html,
+body {
     height: 100%;
+    width: 100%;
+    background-color: var(--bg-color);
+    color: var(--text-dark);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+}
+
+#main {
+    position: relative;
     width: 100%;
 }
 
-#main{
+/* THE HERO SECTION */
+.hero-section-final {
     position: relative;
-    overflow: hidden;
-}
-/* Ensure React root takes full width */
-#root {
+    height: 100vh;
     width: 100%;
-    position: relative;
+}
+
+.bg-name-bottom {
+    position: absolute;
+    bottom: -2vw;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 22vw;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--primary-accent);
+    letter-spacing: -1vw;
+    text-shadow: 0 0 30px rgba(255, 69, 0, 0.3);
+    z-index: 5;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.model-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     z-index: 10;
 }
-/* Fixed nav root outside main scroll container */
+
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 20;
+    text-align: center;
+    max-width: 800px;
+    padding: 40vh 10% 0 10%;
+    display: flex;
+    flex-direction: column;
+    items-center: center;
+    gap: 30px;
+    margin: 0 auto;
+}
+
+.description {
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: var(--text-dark);
+    font-weight: 500;
+    text-shadow: 0 0 40px rgba(235, 233, 225, 0.9);
+}
+
+.cta-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px 30px;
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+    background: rgba(235, 233, 225, 0.4);
+}
+
+.primary-hacker-btn {
+    background: var(--primary-accent);
+    color: #fff;
+    font-weight: 900;
+    padding: 18px 40px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: 0.3s;
+    text-transform: uppercase;
+}
+
+.secondary-hacker-btn {
+    border: 3px solid var(--text-dark);
+    color: var(--text-dark);
+    padding: 18px 40px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: 0.3s;
+    text-transform: uppercase;
+    font-weight: 900;
+    background-color: rgba(235, 233, 225, 0.8);
+}
+
+/* FULL SCREEN ACHIEVEMENTS WITH CARDS */
+.full-screen-section {
+    min-height: 100vh;
+    width: 100% !important;
+    padding: 0 !important; /* ZERO PADDING */
+    margin: 0 !important;  /* ZERO MARGIN */
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 200;
+}
+
+/* SECTION TRANSITIONS */
+#achievement,
+#root {
+    padding: 0 !important; /* ZERO PADDING */
+    margin: 0 !important;  /* ZERO MARGIN */
+    background-color: #fff;
+    position: relative;
+    z-index: 200;
+    width: 100% !important;
+}
+
+/* RESPONSIVE MOBILE FIXES */
+@media (max-width: 768px) {
+
+    body,
+    html {
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow-x: hidden;
+    }
+
+    .hero-section-final {
+        height: 100vh !important;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+
+    .bg-name-bottom {
+        font-size: 22vw !important;
+        bottom: 15vh !important;
+        -webkit-text-stroke: 1px var(--primary-accent);
+        color: var(--primary-accent);
+        position: absolute;
+        z-index: 5;
+    }
+
+    .model-container {
+        height: 55vh !important;
+        top: 10% !important;
+        position: absolute;
+        z-index: 1;
+        pointer-events: none !important;
+        /* ALLOWS SCROLL TO WORK */
+    }
+
+    .hero-content {
+        position: absolute;
+        bottom: 5vh;
+        width: 100%;
+        padding: 0 20px !important;
+        z-index: 10;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .description {
+        font-size: 0.9rem;
+        text-shadow: 0 2px 10px rgba(235, 233, 225, 1);
+        font-weight: 700;
+        color: #1a1a1a;
+        max-width: 90%;
+    }
+
+    .cta-group {
+        flex-direction: column;
+        width: 100%;
+        max-width: 260px;
+        padding: 10px;
+        background: rgba(235, 233, 225, 0.95);
+        z-index: 110;
+        border: 1px solid #ddd;
+    }
+
+    .primary-hacker-btn,
+    .secondary-hacker-btn {
+        width: 100%;
+        padding: 12px;
+        text-align: center;
+        font-size: 0.75rem;
+        z-index: 120;
+    }
+
+    .section-title {
+        font-size: 15vw;
+        letter-spacing: -2px;
+        margin-bottom: 40px;
+    }
+
+    .full-screen-section {
+        padding: 80px 6%;
+        min-height: 100vh;
+        height: auto;
+    }
+
+    .achievement-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    /* Ensure project sections stay full width */
+    .projects-section,
+    .project-container {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        border-radius: 0 !important;
+    }
+
+    canvas {
+        opacity: 0.8;
+    }
+
+    /* Thicker Hamburger with background */
+    .lucide-menu {
+        stroke-width: 3px !important;
+        background: rgba(0, 0, 0, 0.4);
+        border-radius: 6px;
+        padding: 2px;
+    }
+}
+
+.section-subtitle {
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 10px;
+    color: var(--primary-accent);
+    margin-bottom: 10px;
+}
+
+.section-title {
+    font-size: 8vw;
+    font-weight: 900;
+    color: var(--text-dark);
+    line-height: 0.8;
+    margin-bottom: 60px;
+    letter-spacing: -3px;
+}
+
+.achievement-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.a-item {
+    background: #fdfdfd;
+    border: 1px solid #eee;
+    padding: 40px;
+    border-radius: 24px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.a-item:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary-accent);
+    box-shadow: 0 20px 40px rgba(255, 69, 0, 0.1);
+}
+
+.a-badge {
+    align-self: flex-start;
+    padding: 4px 12px;
+    background: #FEE7E0;
+    color: var(--primary-accent);
+    font-size: 10px;
+    font-weight: 900;
+    border-radius: 100px;
+    letter-spacing: 1px;
+}
+
+.a-year {
+    font-size: 12px;
+    font-weight: 900;
+    color: #999;
+}
+
+.a-title {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--text-dark);
+    line-height: 1.1;
+}
+
+.a-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #555;
+    font-weight: 500;
+}
+
 #nav-root {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 9999;
-    pointer-events: none; /* Let clicks pass through wrapper */
-}
-#nav-root > * {
-    pointer-events: auto; /* Re-enable clicks on nav elements */
-}
-#page{
-    position: relative;
-    height: 100vh;
-    width: 100vw;
-}
-#page1{
-    position: relative;
-    height: 100vh;
-    width: 100vw;
-    color: oklch(70.8% 0 0);
-}
-#page2{
-    position: relative;
-    height: 100vh;
-    width: 100vw;
-    color: oklch(70.8% 0 0);
-}
-#page3{
-    position: relative;
-    height: 100vh;
-    width: 100vw;
-    color: oklch(70.8% 0 0);
-
-}
-canvas{
-    position: relative;
-    z-index: 9;
-    max-width: 100vw;
-    max-height: 100vh;
-}
-#loop{
-    display: flex;
-    position: absolute;
-    top: 10%;
-    height: 20%;
-    width: 100%;
-    font-size: 100px;
-    white-space: nowrap;
-    font-family: gilroy;
-}
-#loop>h1{
-    font-weight: 400;
-    animation-name: anim;
-    animation-duration: 15s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-}
-#loop>h1>span{
-    -webkit-text-stroke: 1.2px #000;
-    color: transparent;
-    font-weight: 500;
-}
-/* 🔁 Infinite horizontal scrolling */
-@keyframes anim {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+    z-index: 1000;
 }
 
-/* Ensure logos sit above everything and are visible */
-#loop-1 {
-  position: absolute;
-  top: 78%;                /* adjust to taste */
-  left: 25%;
-  width: 50%;
-  height: 18vh;            /* responsive height */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  z-index: 9999;           /* <-- important: bring above canvas/other elements */
-  pointer-events: none;    /* disable pointer events on the outer container */
-}
-
-/* wrapper holds the moving track but blocks pointer events */
-.logos-wrapper {
-  width: 100%;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-/* the moving track (animated) */
-.logos-track {
-  display: flex;
-  gap: 56px;
-  align-items: center;
-  /* double width to allow seamless - you already duplicated logos in HTML */
-  transform: translate3d(0,0,0);
-  will-change: transform;
-  animation: scrollLogos 36s linear infinite;
-}
-
-/* logo style — pointer-events enabled here so hover works */
-#loop-1 img {
-  display: block;
-  height: 70px;       /* fixed height keeps sizes consistent */
-  width: auto;
-  pointer-events: auto;   /* re-enable events on the images */
-  cursor: pointer;
-  transition: transform 220ms ease, filter 220ms ease, box-shadow 220ms ease;
-  border-radius: 8px;     /* optional */
-  background: transparent;
-}
-
-/* Hover effect — GREEN accent */
-#loop-1 img:hover {
-  transform: scale(1.18);
-  filter: grayscale(0%) brightness(105%) drop-shadow(0 0 8px #00ff00);
-  box-shadow: 0 10px 30px rgba(0,255,0,0.3);
-  outline-color: rgba(0,255,0,0.3);
-}
-
-/* Smooth GPU-friendly animation */
-@keyframes scrollLogos {
-  0%   { transform: translate3d(0, 0, 0); }
-  100% { transform: translate3d(-50%, 0, 0); }
-}
-
-/* Responsive tweaks: smaller screens */
-@media (max-width: 820px) {
-  #loop-1 { top: 85%; height: 14vh; }
-  #loop-1 img { height: 44px; }
-  .logos-track { gap: 28px; animation-duration: 28s; }
-}
-
-#nav{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 10%;
-    width: 100%;
-    position: fixed;
-    z-index: 99;
-    padding: 0px 30px;
-}
-#nav>h3{
-    font-family: gilroy;
-    font-weight: 400;
-    font-size: 22px;
-    color: #ffffff;
-}
-
-/* WELCOME BUTTON - GREEN ACCENT */
-#nav>button{
-    padding: 10px 20px;
-    border-radius: 50px;
-    background-color: transparent;
-    color: #00ff00; /* Green text */
-    border: 1px solid #00ff00; /* Green border */
-    font-family: gilroy;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-#nav>button:hover{
-    background-color: #00ff00; /* Green background on hover */
-    color: #000000; /* Black text on hover */
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5); /* Green glow */
-}
-
-#page>h3{
-    position: absolute;
-    top: 50%;
-    font-family: gilroy;
-    font-weight: 400;
-    color: #7c7c7c;
-    left: 5%;
-}
-
-/* SCROLL TO READ - GREEN ACCENT */
-#page>h4{
-    position: absolute;
-    top: 62%;
-    right: 20%;
-    font-family: gilroy;
-    font-weight: 500;
-    text-align: end;
-    color: #00ff00; /* Green color */
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-}
-
-#page>h4:hover{
-    text-decoration: underline;
-    text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
-    transform: translateY(-2px);
-}
-
-#page1>#right-text{
-    position: absolute;
-    top: 30%;
-    left: 1%;
-}
-
-#page1>#right-text>h3{
-    font-weight: 400;
-    color: #7c7c7c;
-}
-#page1>#right-text>h1{
-    line-height: 1.5;
-    font-size: 45px;
-    color: #ffffff;
-}
-#page1>#left-text{
-    position: absolute;
-    top: 50%;
-    right: 1%;
-    text-align: end;
-}
-#page1>#left-text>h1{
-    font-size: 40px;
-    line-height: 1.5;
-    color: #ffffff;
-}
-#page1>#left-text>h3{
-    color: #7c7c7c;
-    font-weight: 400;
-}
-
-#page2>#text1{
-    position: absolute;
-    top: 30%;
-    left: 1%;
-}
-
-/* Green accent for page2 subheading */
-#page2 #text1 > h3 {
-  color: #00ff00; /* Your green accent color */
-  font-weight: 500;
-  letter-spacing: 0.5px; /* Adds to the 'tech' feel */
-}
-
-#page2 #text1 > h1{
-    font-size: 45px;
-    line-height: 1.5;
-    color: #ffffff;
-}
-#page2>#text2{
-    position: absolute;
-    top: 55%;
-    right: 1%;
-    text-align: end;
-}
-#page2>#text2>p{
-    color: #7c7c7c;
-    font-weight: 400;
-}
-#page3>#text3{
-    position: absolute;
-    top: 40%;
-    right: 2%;
-    text-align: end;
-}
-
-/* Green accent for page3 subheading */
-#page3 #text3 > h3 {
-  color: #00ff00; /* Your green accent color */
-  font-weight: 500;
-  letter-spacing: 0.5px; /* Adds to the 'tech' feel */
-}
-
-#page3>#text3>h1{
-    font-size: 50px; /* Changed from 60px to 70px to match original design */
-    color: #ffffff;
-    line-height: 1.2; /* Added for better line spacing */
-}
-
-/* Additional green accent for other potential interactive elements */
-a, .clickable {
-    color: #00ff00;
-    transition: all 0.3s ease;
-}
-
-a:hover, .clickable:hover {
-    color: #ffffff;
-    text-shadow: 0 0 8px rgba(0, 255, 0, 0.5);
-}
-
-/* Ensure smooth scrolling container */
-#main {
-    scroll-behavior: smooth;
-}
-
-/* Hide default scrollbar for a cleaner look */
-#main::-webkit-scrollbar {
-    display: none;
-}
-
-#main {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-/* Add some subtle parallax effects */
-#page1, #page2, #page3 {
-    transform-style: preserve-3d;
-}
-
-/* Optional: Add a progress indicator */
-.scroll-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 0%;
-    height: 3px;
-    background: #00ff00;
-    z-index: 10000;
-    transition: width 0.1s ease;
-}
-
-/* Green scrollbar for webkit browsers (optional) */
-#main::-webkit-scrollbar-track {
-    background: #000;
-}
-
-#main::-webkit-scrollbar-thumb {
-    background: #00ff00;
-    border-radius: 10px;
-}
-
-#main::-webkit-scrollbar {
-    width: 8px;
-}
-/* Ensure containers have non-static positioning for GSAP */
-#projects, .project-section, [class*="container"] {
-  position: relative !important;
-}
-
-/* ImageTrail specific styles */
-.pointer-events-none {
-  pointer-events: none;
-}
-/* Fix container positioning for Framer Motion */
-#projects, 
-.project-section, 
-[class*="motion"],
-.relative {
-  position: relative !important;
-}
-
-/* Ensure all animated containers have proper positioning */
-.motion-div, 
-[data-framer-component] {
-  position: relative;
-}
-
-/* Fix for scroll-snap containers */
-.project-section {
-  position: relative;
-  scroll-snap-align: start;
-}
-
-html {
- scroll-behavior: smooth;
-}
-
-/* ========================================
-=====     NEW MOBILE STYLES     =====
-========================================
-*/
-@media (max-width: 768px) {
-    /* --- General Page Resets --- */
-    /* Make pages shorter so content isn't 100vh apart */
-    #page1, #page2, #page3 {
-        height: auto; /* Let content define height */
-        min-height: 100vh; /* Still feel like a "page" */
-        padding: 100px 0; /* Add padding for space */
-    }
-
-    /* --- Nav --- */
-    #nav {
-        padding: 0 1rem; /* 16px padding */
-    }
-    #nav>h3 {
-        font-size: 18px;
-    }
-    #nav>button {
-        padding: 8px 16px;
-        font-size: 14px;
-    }
-
-    /* --- Hero Page (#page) --- */
-    #loop {
-        font-size: 12vw; /* Responsive font size */
-        top: 15%;
-        height: auto;
-    }
-    #loop-1 { /* Logos */
-        top: 75%;
-        width: 90%;
-        left: 5%;
-        height: 15vh;
-    }
-    #loop-1 img {
-        height: 40px;
-    }
-    
-    #page>h3 {
-        top: 45%;
-        left: 5%;
-        width: 90%;
-        font-size: 4.5vw;
-        text-align: center;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    #page>h4 {
-        top: 85%;
-        font-size: 4vw;
-        width: 100%;
-        text-align: center;
-        right: 0;
-    }
-
-    /* --- Content Pages (#page1, #page2, #page3) --- */
-    /* This is the most important part: 
-       We reset the absolute positioning and stack the content. */
-
-    #page1>#right-text,
-    #page1>#left-text,
-    #page2>#text1,
-    #page2>#text2,
-    #page3>#text3 {
-        position: relative; /* Override 'absolute' */
-        top: auto;
-        left: auto;
-        right: auto;
-        width: 90%; /* Give some padding */
-        margin: 0 auto; /* Center the block */
-        text-align: center; /* Center all text */
-    }
-
-    /* Add space between the stacked blocks */
-    #page1>#left-text {
-        margin-top: 3rem;
-    }
-    #page2>#text2 {
-        margin-top: 3rem;
-    }
-
-    /* --- Font Sizes --- */
-    #page1>#right-text>h1,
-    #page1>#left-text>h1 {
-        font-size: 8vw;
-        line-height: 1.3;
-    }
-    #page1>#right-text>h3,
-    #page1>#left-text>h3 {
-        font-size: 4.5vw;
-        margin-bottom: 1rem;
-    }
-
-    #page2 #text1 > h1 {
-        font-size: 8vw;
-        line-height: 1.3;
-    }
-    #page2 #text1 > h3 {
-        font-size: 4.5vw;
-        margin-bottom: 1rem;
-    }
-    #page2>#text2>p {
-        font-size: 4.5vw;
-        line-height: 1.6;
-    }
-    
-    #page3>#text3>h1 {
-        font-size: 9vw;
-        line-height: 1.3;
-    }
-    #page3 #text3 > h3 {
-        font-size: 4.5vw;
-        margin-bottom: 1rem;
-    }
+#nav-root .GlassCard>div {
+    background: rgba(0, 0, 0, 0.85) !important;
+    backdrop-filter: blur(25px) !important;
 }

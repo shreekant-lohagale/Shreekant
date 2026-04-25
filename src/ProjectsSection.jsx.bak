@@ -11,63 +11,59 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 const projects = [
   {
     id: 1,
-    cardId: "ecoguard",
-    title: "EcoGuard",
-    subtitle: "AI-Powered Carbon Intelligence",
-    description: "1st Place winner at Code4Society Hackathon. Engineered an end-to-end AI platform to track individual carbon footprints using ML models, Computer Vision, and IoT data pipelines.",
-    technologies: ["React", "Machine Learning", "IoT", "Blockchain", "Python"],
-    status: "Winner",
-    metric: { value: "100%", label: "Real-time accuracy in carbon tracking" },
-    link: "https://github.com/shreekant-lohagale/EcoGuard",
-    image: "/EcoGuard.png",
-    imagePosition: "left",
-    role: "Full Stack Developer",
-    liveLink: "https://lnkd.in/gxVfNUCU"
-  },
-  {
-    id: 2,
     cardId: "chainalchemy",
     title: "ChainAlchemy",
-    subtitle: "Official Blockchain Club Platform",
-    description: "Architected and deployed the official website for ChainAlchemy, JSPM's blockchain club. Consolidates event listings and resources for the next-gen web3 community.",
-    technologies: ["React", "Tailwind CSS", "Web3", "Framer Motion"],
-    status: "Active",
-    metric: { value: "40%", label: "Increase in member engagement post-launch" },
+    subtitle: "Blockchain Club Website",
+    description: "Designed and developed the official website for ChainAlchemy, the Blockchain Club of Pimpri Chinchwad University. Built an interactive, responsive frontend with modern web technologies and a dynamic dark UI reflecting Web3 aesthetics.",
+    technologies: ["React", "Tailwind CSS", "Framer Motion", "Web3"],
+    status: "Completed",
     link: "https://chainalchemy-nine.vercel.app",
     image: "/ChainAlchemy.png",
-    imagePosition: "right",
-    role: "Technical Team Lead",
+    imagePosition: "left",
+    role: "Frontend Developer",
     liveLink: "https://chainalchemy-nine.vercel.app"
   },
   {
-    id: 3,
+    id: 2,
     cardId: "microloan",
     title: "MicroLoan",
     subtitle: "Blockchain Lending Platform",
-    description: "A decentralized lending platform built to empower unbanked individuals through peer-to-peer micro-loans using verified smart contracts.",
+    description: "A decentralized lending platform built to empower unbanked individuals through peer-to-peer micro-loans on blockchain. Developed the full frontend for the DApp using React and Web3 integrations with a clean, user-centric interface.",
     technologies: ["React", "Web3.js", "Solidity", "Blockchain"],
     status: "Completed",
-    metric: { value: "P2P", label: "Permissionless financial empowerment module" },
     link: "https://micro-loan.vercel.app",
     image: "/MicroLoan.png",
-    imagePosition: "left",
+    imagePosition: "right",
     role: "Frontend Developer",
     liveLink: "https://micro-loan.vercel.app"
   },
   {
-    id: 4,
-    cardId: "brain-tumor",
-    title: "BT Detection",
-    subtitle: "Medical Imaging Analysis",
-    description: "Developed a high-accuracy ML classification model for brain tumor detection. Built a custom interface for MRI dataset analysis and clinical data visualization.",
-    technologies: ["Python", "TensorFlow", "Flask", "Scikit-learn"],
+    id: 3,
+    cardId: "argo-floatchat",
+    title: "Argo FloatChat",
+    subtitle: "AI Ocean Data Explorer",
+    description: "An AI-driven conversational assistant that allows users to explore and visualize global oceanographic data without coding. Built the interactive chat and visualization frontend using React with smooth transitions for real-time AI responses.",
+    technologies: ["React", "AI Integration", "Data Visualization", "Tailwind"],
     status: "Completed",
-    metric: { value: "92%+", label: "Model prediction accuracy on MRI data" },
-    link: "https://github.com/shreekant-lohagale",
-    image: "/BrainTumor.png",
+    link: "https://argo-floatchat.vercel.app",
+    image: "/FloatChat.png",
+    imagePosition: "left",
+    role: "Frontend Developer",
+    liveLink: "https://argo-floatchat.vercel.app"
+  },
+  {
+    id: 4,
+    cardId: "marine-data-platform",
+    title: "Marine Data Platform",
+    subtitle: "CMLRE Research Dashboard",
+    description: "A comprehensive web platform providing marine research data and analytics for the Centre for Marine Living Resources & Ecology. Developed a data visualization-focused frontend with intuitive dashboard UI for scientists and researchers.",
+    technologies: ["React", "Chart.js", "Data Visualization", "Dashboard"],
+    status: "Completed",
+    link: "https://cmlre-marine-data-platform.vercel.app",
+    image: "/MDP.png",
     imagePosition: "right",
-    role: "ML Engineer",
-    liveLink: "https://github.com/shreekant-lohagale"
+    role: "Frontend Developer",
+    liveLink: "https://cmlre-marine-data-platform.vercel.app"
   }
 ];
 
@@ -308,7 +304,7 @@ const ProjectsSection = () => {
     <section
       ref={containerRef}
       id="projects"
-      className="relative min-h-screen w-full bg-[#EBE9E1] text-[#1a1a1a] overflow-hidden"
+      className="relative min-h-screen w-full bg-stone-900 text-white overflow-hidden"
     >
       {/* Brand Identity Header */}
       <motion.div
@@ -317,15 +313,15 @@ const ProjectsSection = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.8 }}
       >
-        <p className="text-white uppercase tracking-[10px] text-xs font-bold opacity-80">
-          SELECTED CASE STUDIES
+        <p className="text-stone-500 uppercase tracking-widest text-sm font-semibold">
+          Real-World Projects / By Shreekant Lohagale
         </p>
       </motion.div>
 
       {/* Hero Section */}
       <motion.div
         ref={heroRef}
-        className="project-section h-screen flex items-center justify-center bg-stone-950 relative"
+        className="project-section h-screen flex items-center justify-center bg-stone-900 relative"
         style={{ scrollSnapAlign: 'start' }}
         initial="hidden"
         animate={heroInView ? "visible" : "hidden"}
@@ -350,27 +346,35 @@ const ProjectsSection = () => {
           style={{ y: heroTitleY }}
         >
           <motion.h1
-            className="text-[12vw] md:text-[18vw] font-black mb-6 text-[#E43D12] leading-[0.85] tracking-tighter"
+            className="text-4xl md:text-6xl lg:text-8xl font-bold mb-6 text-white"
             variants={itemVariants}
           >
-            REAL <br /> PROJECTS.
+            REAL <motion.span
+              className="text-green-500"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
+            >
+              PROJECTS
+            </motion.span>
           </motion.h1>
           <motion.p
-            className="text-lg md:text-xl lg:text-3xl text-[#555] max-w-4xl mx-auto font-medium"
+            className="text-lg md:text-xl lg:text-2xl text-stone-300 max-w-3xl mx-auto"
             variants={itemVariants}
             style={{ y: heroSubtitleY }}
           >
-            From <span className="text-[#E43D12]">blockchain ecosystems</span> to <span className="text-[#E43D12]">AI-powered dashboards</span>,
-            these are the production applications I've built and shipped. Every project represents technical innovation and real-world impact.
+            From <span className="text-green-400">blockchain ecosystems</span> to <span className="text-green-400">AI-powered data platforms</span>,
+            these are the production applications I've built and shipped. Every project represents real users and real impact.
           </motion.p>
         </motion.div>
       </motion.div>
 
+      {/* Project Cards with Scroll Snapping */}
       <AnimatePresence>
         {projects.map((project, index) => (
           <motion.div
             key={project.id}
-            className="project-section min-h-screen md:h-screen flex items-center justify-center m-0" // ZERO MARGIN
+            className="project-section h-screen flex items-center justify-center"
             style={{ scrollSnapAlign: 'start' }}
             id={project.cardId}
             initial={{ opacity: 0, y: 50 }}
@@ -378,7 +382,7 @@ const ProjectsSection = () => {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, delay: index * 0.1 }}
           >
-            <div className="w-full"> {/* REMOVED MAX-W AND PX PADDING */}
+            <div className="w-full max-w-6xl mx-auto px-4 sm:px-5">
               <ProjectCard
                 project={{ ...project, index }}
               />

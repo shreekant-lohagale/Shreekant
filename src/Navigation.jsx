@@ -9,6 +9,7 @@ export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
+    { label: "Experience", href: "#experience" },
     { label: "PROJECTS", href: "#projects" },
     { label: "Achievement", href: "#achievement" },
     { label: "Contact", href: "#contact" },
@@ -37,15 +38,15 @@ export function Navigation() {
       className="fixed top-0 left-0 right-0 z-50 p-6"
     >
       <GlassCard className="max-w-7xl mx-auto p-0">
-        <div className="w-full rounded-2xl border border-border/50 backdrop-blur-md">
+        <div className="w-full rounded-2xl border border-[#ddd] backdrop-blur-[20px] bg-[#EBE9E1]/95">
           <div className="flex items-center justify-between px-6 py-4">
             {/* Logo */}
             <div className="flex items-center gap-2 text-neutral-300">
               <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center">
                 <img src={"./logo.jpg"} alt="logo" className="rounded-xl" />
               </div>
-              <h3 className="text-xl font-bold">
-                <b>SHREE</b>KANT*
+              <h3 className="text-xl font-black tracking-tighter text-[#1a1a1a]">
+                SHREEKANT
               </h3>
             </div>
 
@@ -61,12 +62,13 @@ export function Navigation() {
                 </button>
               ))}
 
-              {/* Welcome Button */}
-              <button
-                className="px-5 py-2 rounded-[50px] bg-transparent text-[#00ff00] border border-[#00ff00] font-gilroy text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#00ff00] hover:text-black hover:shadow-[0_0_20px_rgba(0,255,0,0.5)]"
+               <a
+                href="./Shreekant_Lohagale_CV.pdf"
+                download
+                className="px-5 py-2 rounded-md bg-[#E43D12] text-[#fff] font-bold text-sm tracking-wider uppercase no-underline hover:bg-[#D6536D] transition-colors"
               >
-                WELCOME
-              </button>
+                RESUME
+              </a>
             </div>
 
             {/* Mobile Menu Button */}
@@ -97,12 +99,13 @@ export function Navigation() {
                   </button>
                 ))}
 
-                {/* Mobile Welcome Button */}
-                <button
-                  className="w-full px-5 py-2 rounded-[50px] bg-transparent text-[#00ff00] border border-[#00ff00] font-gilroy text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#00ff00] hover:text-black hover:shadow-[0_0_20px_rgba(0,255,0,0.5)]"
+                 <a
+                  href="./Shreekant_Lohagale_CV.pdf"
+                  download
+                  className="w-full px-5 py-2 rounded-[50px] bg-transparent text-[#00ff00] border border-[#00ff00] font-gilroy text-base cursor-pointer transition-all duration-300 ease-in-out hover:bg-[#00ff00] hover:text-black hover:shadow-[0_0_20px_rgba(0,255,0,0.5)] no-underline flex items-center justify-center font-bold"
                 >
-                  WELCOME
-                </button>
+                  RESUME
+                </a>
               </div>
             </motion.div>
           )}
