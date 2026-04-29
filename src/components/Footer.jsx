@@ -10,9 +10,8 @@ export function Footer() {
       title: "PROJECTS",
       links: [
         { name: "EcoGuard", href: "#ecoguard" },
-        { name: "ChainAlchemy", href: "#chainalchemy" },
-        { name: "MicroLoan", href: "#microloan" },
         { name: "BT Detection", href: "#brain-tumor" },
+        { name: "Housing Dashboard", href: "#housing-price" },
       ],
     },
     {

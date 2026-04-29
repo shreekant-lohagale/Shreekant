@@ -100,7 +100,7 @@ ScrollTrigger.refresh();
 // PARALLAX & PINNING BRANDING (FORCE STOP ENGINE)
 let mm = gsap.matchMedia();
 
-mm.add("(min-width: 769px)", () => {
+mm.add("(min-width: 1025px)", () => {
     // DESKTOP PINNING
     const heroTl = gsap.timeline({
         scrollTrigger: {
@@ -123,7 +123,7 @@ mm.add("(min-width: 769px)", () => {
         }, "-=1");
 });
 
-mm.add("(max-width: 768px)", () => {
+mm.add("(max-width: 1024px)", () => {
     // MOBILE PINNING (FORCED LOCK ENGINE)
     ScrollTrigger.create({
         trigger: ".hero-section-final",
@@ -137,16 +137,44 @@ mm.add("(max-width: 768px)", () => {
         anticipatePin: 1,
     });
 
-    // Animate the name specifically during the lock
-    gsap.to(".bg-name-bottom", {
-        scrollTrigger: {
-            trigger: ".hero-section-final",
-            start: "top top",
-            end: "+=100%",
-            scrub: true,
-        },
-        y: -50,
-        scale: 1.1,
-        opacity: 1
+    // 1. Lock scroll immediately
+    document.body.style.overflow = 'hidden';
+
+    // 3-SECOND GSAP INTRO ANIMATION
+    const tl = gsap.timeline({
+      onComplete: () => {
+        // 2. Unlock scroll after animation finishes
+        document.body.style.overflow = 'auto';
+      }
     });
+
+    // Initial State
+    gsap.set(".bg-name-bottom", { opacity: 0, scale: 0.8, filter: "blur(10px)" });
+    gsap.set(".model-container", { autoAlpha: 0, scale: 0.8, y: 50 });
+
+    // The 3-Second Sequence
+    tl.to(".bg-name-bottom", {
+      opacity: 0.15,
+      scale: 1.1,
+      filter: "blur(0px)",
+      duration: 2,
+      ease: "power2.inOut"
+    })
+    .to(".model-container", {
+      autoAlpha: 1,
+      scale: 1,
+      y: 0,
+      duration: 1.5,
+      ease: "expo.out"
+    }, "-=1.5") // Overlap animations for smoothness
+    .to({}, { duration: 1 }) // Final 1s pause to hit the 3s mark
+    .fromTo(".description", {
+      opacity: 0,
+      y: 20
+    }, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      stagger: 0.2
+    }, "-=0.5");
 });

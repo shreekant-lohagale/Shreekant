@@ -45,7 +45,7 @@ const ProjectCard = ({ project }) => {
           </div>
         )}
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 project-tags">
           {project.technologies.map((tech) => (
             <span
               key={tech}
