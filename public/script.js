@@ -31,9 +31,12 @@ ScrollTrigger.defaults({ scroller: "#main" });
 const canvas = document.querySelector("#hero-model-canvas");
 const context = canvas.getContext("2d");
 
+let renderMath = null;
+
 function resize() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    renderMath = null; // Force recalculation on resize
     render();
 }
 window.addEventListener("resize", resize);
@@ -59,36 +62,49 @@ gsap.to(imageSeq, {
     snap: "frame",
     ease: "none",
     scrollTrigger: {
-        trigger: "#page",
+        trigger: ".hero-section-final", // changed from nonexistent #page
         start: "top top",
-        end: "600% top",
-        scrub: 0.15,
+        end: "+=150%", // sync with hero section pinning duration
+        scrub: 0.5, // increased for smoother mobile playback
     },
     onUpdate: render
 });
 
-function render() {
-    scaleImage(images[imageSeq.frame], context);
-}
-
-function scaleImage(img, ctx) {
+function updateRenderMath(img, canvas) {
     if (!img) return;
-    var canvas = ctx.canvas;
     var hRatio = canvas.width / img.width;
     var vRatio = canvas.height / img.height;
     var ratio = Math.max(hRatio, vRatio);
-    var centerShift_x = (canvas.width - img.width * ratio) / 2;
-    var centerShift_y = (canvas.height - img.height * ratio) / 2;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, 0, 0, img.width, img.height, centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
+    renderMath = {
+        cx: (canvas.width - img.width * ratio) / 2,
+        cy: (canvas.height - img.height * ratio) / 2,
+        cw: img.width * ratio,
+        ch: img.height * ratio
+    };
 }
 
-ScrollTrigger.create({
-    trigger: "#page",
-    pin: true,
-    start: "top top",
-    end: "600% top",
-});
+function render() {
+    const currentFrame = Math.round(imageSeq.frame);
+    scaleImage(images[currentFrame], context);
+}
+
+function scaleImage(img, ctx) {
+    if (!img || !img.complete) return; // ensure image is fully loaded
+    var canvas = ctx.canvas;
+    
+    if (!renderMath) {
+        updateRenderMath(img, canvas);
+    }
+    
+    if (renderMath) {
+        // Use a faster clear method or fillRect if background is solid. 
+        // We use clearRect to keep it transparent/background color.
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, img.width, img.height, renderMath.cx, renderMath.cy, renderMath.cw, renderMath.ch);
+    }
+}
+
+// Removed redundant #page pin since .hero-section-final is pinned in matchMedia
 
 // MARQUEE
 gsap.to("#loop", { xPercent: -50, repeat: -1, duration: 30, ease: "none" });
@@ -142,10 +158,10 @@ mm.add("(max-width: 1024px)", () => {
 
     // 3-SECOND GSAP INTRO ANIMATION
     const tl = gsap.timeline({
-      onComplete: () => {
-        // 2. Unlock scroll after animation finishes
-        document.body.style.overflow = 'auto';
-      }
+        onComplete: () => {
+            // 2. Unlock scroll after animation finishes
+            document.body.style.overflow = 'auto';
+        }
     });
 
     // Initial State
@@ -154,27 +170,27 @@ mm.add("(max-width: 1024px)", () => {
 
     // The 3-Second Sequence
     tl.to(".bg-name-bottom", {
-      opacity: 0.15,
-      scale: 1.1,
-      filter: "blur(0px)",
-      duration: 2,
-      ease: "power2.inOut"
+        opacity: 0.15,
+        scale: 1.1,
+        filter: "blur(0px)",
+        duration: 2,
+        ease: "power2.inOut"
     })
-    .to(".model-container", {
-      autoAlpha: 1,
-      scale: 1,
-      y: 0,
-      duration: 1.5,
-      ease: "expo.out"
-    }, "-=1.5") // Overlap animations for smoothness
-    .to({}, { duration: 1 }) // Final 1s pause to hit the 3s mark
-    .fromTo(".description", {
-      opacity: 0,
-      y: 20
-    }, {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      stagger: 0.2
-    }, "-=0.5");
+        .to(".model-container", {
+            autoAlpha: 1,
+            scale: 1,
+            y: 0,
+            duration: 1.5,
+            ease: "expo.out"
+        }, "-=1.5") // Overlap animations for smoothness
+        .to({}, { duration: 1 }) // Final 1s pause to hit the 3s mark
+        .fromTo(".description", {
+            opacity: 0,
+            y: 20
+        }, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            stagger: 0.2
+        }, "-=0.5");
 });
